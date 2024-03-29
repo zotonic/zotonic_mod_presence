@@ -13,7 +13,7 @@ Add these javascripts to your lib tag:
 %}
 ```
 
-To indicate presence at a location at this to your page:
+To indicate presence at a location add this to your page:
 
 ```html
 <span class="do_presence" data-presence-where="foo"></span>
