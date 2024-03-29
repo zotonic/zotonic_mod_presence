@@ -39,7 +39,7 @@ This could also be combined:
 The `presence` widget broadcasts the current user's status to the topic:
 
 ```
-bridge/presence/status/:where
+bridge/origin/presence/status/:where
 ```
 
 The payload is:
