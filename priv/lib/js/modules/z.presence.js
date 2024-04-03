@@ -246,7 +246,7 @@ $.widget("ui.presence", {
 
         actions.ping = function(_data) {
             if (!model.element.closest('html')) {
-                actions.stop({});
+                actions.unmount({});
             } else {
                 model.propose({ ping: true });
             }
