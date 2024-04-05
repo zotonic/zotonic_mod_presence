@@ -47,6 +47,8 @@ $.widget("ui.presenceview", {
             element: undefined,
             is_subscribed: false,
             observer: undefined,
+            unique_id: undefined,
+            wid: undefined,
             presences: [
                 // {
                 //     user_id: ...,
@@ -90,7 +92,7 @@ $.widget("ui.presenceview", {
                     function(msg) {
                         actions.presence(msg);
                     },
-                    { qos: 1, wid: model.unique_id });
+                    { qos: 1, wid: model.wid });
                 model.is_subscribed = true;
 
                 if (model.observer === undefined && model.element !== undefined) {
@@ -99,9 +101,38 @@ $.widget("ui.presenceview", {
                     // by Cotonic DOM patching).
                     model.element.setAttribute('presenceview', '1');
                     model.observer = new MutationObserver(() => {
-                        setTimeout(() => actions.render(), 100);
+                        setTimeout(() => actions.check(), 100);
                     });
                     model.observer.observe(model.element, { attributes: true });
+                }
+            }
+
+            if (data.check === true && model.is_subscribed) {
+                const newWhere = model.element.dataset.presenceviewWhere
+                              || model.element.dataset.presenceWhere;
+
+                if (newWhere && newWhere !== model.where) {
+                    cotonic.broker.unsubscribe(
+                        "bridge/origin/presence/status/"+model.where,
+                        { wid: model.wid });
+
+                    model.where = newWhere;
+                    model.presences = [];
+                    cotonic.broker.subscribe(
+                        "bridge/origin/presence/status/"+model.where,
+                        function(msg) {
+                            actions.presence(msg);
+                        },
+                        { qos: 1, wid: model.wid });
+
+                    cotonic.broker.publish(
+                        "bridge/origin/presence/request/"+model.where,
+                        { unique_id: model.unique_id },
+                        { qos: 1 });
+                }
+
+                if (model.element.getAttribute('presenceview') !== '1') {
+                    model.element.setAttribute('presenceview', '1');
                 }
             }
 
@@ -222,6 +253,7 @@ $.widget("ui.presenceview", {
         // Initial State
         view.init = function(model) {
             model.unique_id = unique_id();
+            model.wid = "-presenceview-" + model.unique_id;
             return view.ready(model) ;
         } ;
 
@@ -331,6 +363,10 @@ $.widget("ui.presenceview", {
         actions.render = function(_data) {
             model.propose({ render: true });
         };
+
+        actions.check = function(_data) {
+            model.propose({ check: true });
+        }
 
         actions.presence = function(msg) {
             let data = {

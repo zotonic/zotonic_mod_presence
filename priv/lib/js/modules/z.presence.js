@@ -42,6 +42,7 @@ $.widget("ui.presence", {
         var model = {
             element: undefined,
             unique_id: undefined,
+            wid: undefined,
             user_id: undefined,
             where: undefined,
             status: STATUS_PRESENT,
