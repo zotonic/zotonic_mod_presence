@@ -135,7 +135,7 @@ $.widget("ui.presenceview", {
                 }
             }
 
-            if (data.presence !== undefined && data.presence.page_id == model.page_id) {
+            if (data.presence !== undefined && data.presence.where == model.where) {
                 let i;
 
                 for (i=0; i<model.presences.length; i++) {
