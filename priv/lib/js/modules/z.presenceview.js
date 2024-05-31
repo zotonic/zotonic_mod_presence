@@ -92,7 +92,7 @@ $.widget("ui.presenceview", {
                     function(msg) {
                         actions.presence(msg);
                     },
-                    { qos: 1, wid: model.wid });
+                    { qos: 0, wid: model.wid });
                 model.is_subscribed = true;
 
                 if (model.observer === undefined && model.element !== undefined) {
@@ -123,12 +123,12 @@ $.widget("ui.presenceview", {
                         function(msg) {
                             actions.presence(msg);
                         },
-                        { qos: 1, wid: model.wid });
+                        { qos: 0, wid: model.wid });
 
                     cotonic.broker.publish(
                         "bridge/origin/presence/request/"+model.where,
                         { unique_id: model.unique_id },
-                        { qos: 1 });
+                        { qos: 0 });
                 }
 
                 if (model.element.getAttribute('presenceview') !== '1') {
@@ -140,7 +140,7 @@ $.widget("ui.presenceview", {
                 cotonic.broker.publish(
                     "bridge/origin/presence/request/"+model.where,
                     { unique_id: model.unique_id },
-                    { qos: 1 });
+                    { qos: 0 });
             }
 
             for (let ph in model.html) {
@@ -154,7 +154,7 @@ $.widget("ui.presenceview", {
                             user_id: p_user_id,
                             unique_id: p_unique_id
                         },
-                        { qos: 1, timeout: CALL_TIMEOUT })
+                        { qos: 0, timeout: CALL_TIMEOUT })
                     .then(function(msg) {
                         const data = {
                             unique_id: p_unique_id,
@@ -209,7 +209,7 @@ $.widget("ui.presenceview", {
                             user_id: p_user_id,
                             unique_id: p_unique_id
                         },
-                        { qos: 1, timeout: CALL_TIMEOUT })
+                        { qos: 0, timeout: CALL_TIMEOUT })
                     .then(function(msg) {
                         const data = {
                             unique_id: p_unique_id,
