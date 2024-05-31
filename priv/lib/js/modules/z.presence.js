@@ -127,7 +127,7 @@ $.widget("ui.presence", {
                         where: model.where,
                         status: model.status
                     },
-                    { qos: 1 });
+                    { qos: 0 });
             }
 
             // Render the new view
