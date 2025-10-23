@@ -1,9 +1,9 @@
 %% @author Marc Worrell <marc@worrell.nl>
-%% @copyright 2024 Marc Worrell
+%% @copyright 2024-2025 Marc Worrell
 %% @doc Simple presence for authenticated users.
 %% @end
 
-%% Copyright 2024 Marc Worrell
+%% Copyright 2024-2025 Marc Worrell
 %%
 %% Licensed under the Apache License, Version 2.0 (the "License");
 %% you may not use this file except in compliance with the License.
@@ -36,10 +36,24 @@ observe_acl_is_allowed(
     #acl_is_allowed{
         action = _,
         object = #acl_mqtt{
-            topic = [ <<"presence">> | _ ]
+            is_wildcard = false,
+            topic = [ <<"presence">>, _, <<"mod_", _/binary>> = Module | _ ]
+        }
+    }, Context) ->
+    try
+        ModAsAtom = binary_to_existing_atom(Module),
+        z_acl:is_allowed(use, ModAsAtom, Context)
+    catch
+        _:_ -> false
+    end;
+observe_acl_is_allowed(
+    #acl_is_allowed{
+        action = _,
+        object = #acl_mqtt{
+            topic = [ <<"presence">> | _ ],
+            is_wildcard = false
         }
     }, Context) ->
     z_auth:is_auth(Context);
 observe_acl_is_allowed(_, _Context) ->
     undefined.
-

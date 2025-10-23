@@ -204,7 +204,7 @@ $.widget("ui.presenceview", {
                     const p_unique_id = data.presence.unique_id;
                     const p_user_id = data.presence.user_id;
                     cotonic.broker.call(
-                        "bridge/origin/model/template/get/render/_chatpage_presence.tpl",
+                        "bridge/origin/model/template/get/render/_presence_user.tpl",
                         {
                             user_id: p_user_id,
                             unique_id: p_unique_id
