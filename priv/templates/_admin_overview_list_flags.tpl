@@ -1,1 +1,1 @@
-<div class="do_presenceview" data-presence-where="mod_admin/{{ id }}"></div>
+<span class="do_presenceview" data-presence-where="mod_admin/{{ id }}"></span>
