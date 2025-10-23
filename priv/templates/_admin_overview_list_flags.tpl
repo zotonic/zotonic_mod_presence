@@ -1,0 +1,1 @@
+<div class="do_presenceview" data-presence-where="mod_admin/{{ id }}"></div>
